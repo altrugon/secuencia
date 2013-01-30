@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Sequence javascript</title>
+    <style type="text/css" media="screen">
+    	#dog-area {
+      	border: 1px solid #333;
+      	padding-bottom: 20px;
+    	}
+    </style>
+  </head>
+  <body>
+    <div id="dog-area">
+      <img id="dog" src="images/dog-0.png" />
+    </div>
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="js/sequence.js"></script>
+    <script type="text/javascript">
+      jQuery(function() {
+        /*
+        new RotateWidget('dog', 'dog-area', 'dog-area', 
+          function ffl(i, j) {
+              return 'images/dog-'+ (7-j) +'.png';
+          }, 1, 7, {wrap_around: false, start_y: 0}
+        );
+        */
+        
+        new RotateWidget('dog', 'dog-area', 'dog-area', 
+          // function generates filenames given frame num.   pf = for debugging convenience
+          function pf(i) {
+              i = 7 - i;  // left-right inversion
+              return 'images/dog-'+ (7-i) +'.png';
+          }, 7, 1, {start_x: 0}
+        );
+      });
+    </script>
+  </body>
+</html>
