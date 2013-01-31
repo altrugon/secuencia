@@ -21,9 +21,9 @@
 // integers 0...31, like this: function(i) { return '360_frames/'+ i +'.jpg'; }
 // or if you get the wrong direction try this: function(i) { return '360_frames/'+ (31-i) +'.jpg'; }
 //
-// imgId = your <img, it will get different image files plugged into its src attr
-// clickDownId = active element getting clickdowns, same or parent of imgId
-// dragAreaId = user can drag/animate over this area, same or parent of clickDownId, maybe body
+// settings.img_selector = your <img, it will get different image files plugged into its src attr
+// settings.click_selector = active element getting clickdowns, same or parent of img_selector
+// settings.drag_selector = user can drag/animate over this area, same or parent of options.click_selector, maybe body
 //
 // call it like this for vertical dragging animation:
 //     new Secuencia('myImgTagID', callback(i, j), 1, 6);
@@ -32,17 +32,18 @@
 //     new Secuencia('myImgTagID', callback(i, j), 5, 5);
 // Your 25 image frames are indexed by i and j
 // Don't worry about the object created; all the events will find it, you don't need it.  just construct it.
-function Secuencia(imgId, clickDownId, dragAreaId, frameURLPat, nFramesX, nFramesY, options) {
-    this.options = options || {};
-    this.imgjq = this.elem('image_el', $('#' + imgId)) ;
+//function Secuencia(imgId, clickDownId, dragAreaId, frameURLPat, nFramesX, nFramesY, options) {
+function Secuencia(settings) {
+    this.options = settings || {};
+    this.imgjq = this.elem('image_el', $(settings.img_selector)) ;
     this.imgjq[0].secuencia = this;  // how we find this upon events.
 
-    this.clickjq = this.elem('click_el', $('#' + clickDownId) || this.imgjq);
+    this.clickjq = this.elem('click_el', $(settings.click_selector) || this.imgjq);
     this.clickjq.mousedown(Secuencia.down);
     this.clickjq[0].secuencia = this;
     this.clickjq.css('cursor', 'move');
 
-    this.dragjq = this.elem('drag_el', $('#' + dragAreaId) || this.clickjq);
+    this.dragjq = this.elem('drag_el', $(settings.drag_selector) || this.clickjq);
     this.dragjq.mousemove(Secuencia.move);
     this.dragjq.mouseup(Secuencia.up);
     this.dragjq.mouseout(Secuencia.out);
@@ -52,12 +53,12 @@ function Secuencia(imgId, clickDownId, dragAreaId, frameURLPat, nFramesX, nFrame
     this.curFrameY = this.newFrameY = this.lastFrameY = this.opt('start_y', 0);
     this.frameToPreloadX = this.frameToPreloadY = 0;
 
-    this.patFunc = this.opt('filename_func', frameURLPat);
+    this.patFunc = this.opt('filename_func', settings.frameURLPat);
     this.wrap_around = this.opt('wrap_around', true);
 
-    this.nX = this.opt('x_frames', nFramesX || 1);
+    this.nX = this.opt('x_frames', settings.nFramesX || 1);
     this.halfX = Math.floor(this.nX / 2 + .51);  // round up if odd
-    this.nY = this.opt('y_frames', nFramesY || 1);
+    this.nY = this.opt('y_frames', settings.nFramesY || 1);
     this.halfY = Math.floor(this.nY / 2 + .51);
     this.getSizeInfo();
     var t_this = this;
@@ -86,7 +87,7 @@ Secuencia.prototype.elem = function go(opt_name, def) {
         return def;
     var el = this.options[opt_name];
     if ('string' == typeof el)
-        return $('#'+ el);
+        return $(el);
     else if ('object' == typeof el && 'string' == typeof el.nodeName)
         return $(el);
     return def;

@@ -19,21 +19,19 @@
     <script type="text/javascript" src="js/secuencia.js"></script>
     <script type="text/javascript">
       jQuery(function() {
-        /*
-        new Secuencia('dog', 'dog-area', 'dog-area', 
-          function ffl(i, j) {
-              return 'images/dog-'+ (7-j) +'.png';
-          }, 1, 7, {wrap_around: false, start_y: 0}
-        );
-        */
-        
-        new Secuencia('dog', 'dog-area', 'dog-area', 
-          // function generates filenames given frame num.   pf = for debugging convenience
-          function pf(i) {
+        var settings = {
+          img_selector: "#dog",
+          click_selector: "#dog-area",
+          drag_selector: "#dog-area",
+          frameURLPat: function pf(i) {
               i = 7 - i;  // left-right inversion
               return 'images/dog-'+ (7-i) +'.png';
-          }, 7, 1, {start_x: 0}
-        );
+          },
+          nFramesX: 7,
+          nFramesY: 1,
+          start_x: 0
+        };
+        new Secuencia(settings);
       });
     </script>
   </body>
