@@ -16,14 +16,22 @@
     </div>
     
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript" src="js/secuencia.js"></script>
+    <script type="text/javascript" src="js/secuencia-old.js"></script>
     <script type="text/javascript">
       jQuery(function() {
         var settings = {
-          frames: 7,
-          listener: "#dog-area"
+          img_selector: "#dog",
+          click_selector: "#dog-area",
+          drag_selector: "#dog-area",
+          frameURLPat: function pf(i) {
+              i = 7 - i;  // left-right inversion
+              return 'images/dog-'+ (7-i) +'.png';
+          },
+          nFramesX: 7,
+          nFramesY: 1,
+          start_x: 0
         };
-        $('#dog').secuencia();
+        new Secuencia(settings);
       });
     </script>
   </body>
