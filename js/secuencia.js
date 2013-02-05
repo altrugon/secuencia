@@ -12,6 +12,7 @@
         defaults = {
           frameLoaded : 0,             // The loaded frame
           frames      : [],            // Array to hold image frames
+          framesMoved : 0,             // The amount of frame that has been moved during the dragging action
           cursorStyle : 'move',        // Cursor change to 'move' by default to let the user know about the sequence behaviour
           direction   : 'horizontal',  // Dragging direction: horizontal, vertical, right, left, up, or down
           dragging    : false,         // Flag to check if we are dragging inside the element
@@ -19,8 +20,9 @@
           fileName    : '',            // File name, ie: /this/is/myfile-0.png >> 'myfile'
           filePath    : '',            // File path, ie: /this/is/myfile-0.png >> '/this/is/'
           listener    : undefined,     // The DOM element that will be listening for the events, will be set on the constructor
-          nFrames     : 0,              // Number of frames
-          framesMoved : 0
+          nFrames     : 0,             // Number of frames
+          speed       : 1,             // Speed = 1 >> In one full drag we see a whole sequence. Increase or decrease speed as needed
+          width       : 0
         };
 
     // The actual plugin constructor
@@ -41,6 +43,7 @@
       defaults.fileName = img.substring(i, img.lastIndexOf("-"));
 
       defaults.listener = element;
+      defaults.width = $(element).width();
 
 
       // The first object empty because we don't want to alter
@@ -58,7 +61,8 @@
 
       // Access to the DOM element via the instance "this.element"
       // Access to the options via the instance "this.options"
-      $(this.options.listener).bind('hover.secuencia', this, mouseenter, mouseleave);
+      $(this.options.listener).bind('mouseenter.secuencia', this, mouseenter);
+      $(this.options.listener).bind('mouseleave.secuencia', this, mouseleave);
       $(this.options.listener).bind('mousedown.secuencia', this, mousedown);
       $(this.options.listener).bind('mousemove.secuencia', this, mousemove);
       $(this.options.listener).bind('mouseup.secuencia', this, mouseup);
@@ -128,10 +132,11 @@
         }
 
         var new_frame,
-            dragX = event.pageX - s.options.downX;
+            dragX = event.pageX - s.options.downX,
+            final_speed = s.options.width / (s.options.nFrames * s.options.speed);
 
-        dragX = (dragX < 0) ? dragX + 44 : dragX; // compesate negative dragging
-        new_frame = Math.floor(dragX / 44);
+        dragX = (dragX < 0) ? dragX + final_speed : dragX; // compesate negative dragging
+        new_frame = Math.floor(dragX / final_speed);
 
         if (new_frame != s.options.framesMoved) {
           s.options.framesMoved = new_frame;
