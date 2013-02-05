@@ -20,10 +20,11 @@
     <script type="text/javascript">
       jQuery(function() {
         var settings = {
-          frames: 7,
-          listener: "#dog-area"
+          listener: "#dog-area",
+          nFrames: 6,
+          speed: 2
         };
-        $('#dog').secuencia({nFrames:6, speed: 2});
+        $('#dog').secuencia(settings);
       });
     </script>
   </body>

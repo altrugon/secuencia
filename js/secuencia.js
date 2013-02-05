@@ -43,12 +43,14 @@
       defaults.fileName = img.substring(i, img.lastIndexOf("-"));
 
       defaults.listener = element;
-      defaults.width = $(element).width();
 
 
       // The first object empty because we don't want to alter
       // the default options for future instances of the plugin
       this.options = $.extend({}, defaults, options) ;
+
+      // This shouldn't be here. Setting an option after the $.extend call doesn't seem right.
+      this.options.width = $(this.options.listener).width();
 
       this._defaults = defaults;
       this._name = pluginName;
@@ -148,7 +150,7 @@
           else {
             s.options.frameLoaded = ((s.options.frameLoaded - 1) >= 0) ? (s.options.frameLoaded - 1) : (s.options.nFrames - 1);
           }
-          $(this).attr('src', $(s.options.frames[s.options.frameLoaded]).attr('src'));
+          $(s.element).attr('src', $(s.options.frames[s.options.frameLoaded]).attr('src'));
         }
 
         event.preventDefault();
