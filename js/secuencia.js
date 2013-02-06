@@ -171,9 +171,6 @@
             var xpos, ypos,
                 pos = $(s.element).css('background-position').split(' ');
 
-            //xpos = parseInt(pos[0], 10),
-            //ypos = parseInt(pos[1], 10);
-
             if (s.options.direction === 'horizontal') {
               xpos = '-' + (s.options.frameLoaded * $(s.element).width()) + 'px';
               ypos = parseInt(pos[1], 10) + 'px';
