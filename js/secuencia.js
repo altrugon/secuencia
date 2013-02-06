@@ -11,7 +11,7 @@
     var pluginName = "secuencia",
         defaults = {
           frameLoaded : 0,             // The loaded frame
-          frames      : [],            // Array to hold image frames
+          frames      : [],            // Array to hold image frames, only for Secuencias type 'image'.
           framesMoved : 0,             // The amount of frame that has been moved during the dragging action
           cursorStyle : 'move',        // Cursor change to 'move' by default to let the user know about the sequence behaviour
           direction   : 'horizontal',  // Dragging direction: horizontal or vertical
@@ -21,7 +21,8 @@
           filePath    : '',            // File path, ie: /this/is/myfile-0.png >> '/this/is/'
           listener    : undefined,     // The DOM element that will be listening for the events, will be set on the constructor
           nFrames     : 0,             // Number of frames
-          speed       : 1              // Speed = 1 >> In one full drag we see a whole sequence. Increase or decrease speed as needed
+          speed       : 1,             // Speed = 1 >> In one full drag we see a whole sequence. Increase or decrease speed as needed
+          type        : 'image'        // Sequence type: image for <img> or background for background-image.
         };
 
     // The actual plugin constructor
@@ -30,8 +31,15 @@
 
       // Due to the variables scope some defaults have to be set here
       var i, img;
-      img = $(element).is("img") ? $(element).attr('src') : $(element).css('background-image');
-      if (!img) {
+      if ($(element).is("img")) {
+        img = $(element).attr('src');
+        defaults.type = 'image';
+      }
+      else if ($(element).css('background-image')) {
+        img = $(element).css('background-image');
+        defaults.type = 'background';
+      }
+      else {
         $.error( 'Secuencia was unable to find an image.' );
         return;
       }
@@ -55,7 +63,9 @@
     }
 
     Secuencia.prototype.init = function () {
-      this.loadFrames();
+      if (this.options.type === 'image') {
+        this.loadFrames();
+      }
 
       // Access to the DOM element via the instance "this.element"
       // Access to the options via the instance "this.options"
@@ -153,7 +163,25 @@
           else {
             s.options.frameLoaded = ((s.options.frameLoaded - 1) >= 0) ? (s.options.frameLoaded - 1) : (s.options.nFrames - 1);
           }
-          $(s.element).attr('src', $(s.options.frames[s.options.frameLoaded]).attr('src'));
+
+          if (s.options.type === 'image') {
+            $(s.element).attr('src', $(s.options.frames[s.options.frameLoaded]).attr('src'));
+          }
+          else {
+            var xpos = parseInt($(s.element).css('background-position-x'), 10),
+                ypos = parseInt($(s.element).css('background-position-y'), 10);
+
+            if (s.options.direction === 'horizontal') {
+              xpos = '-' + (s.options.frameLoaded * $(s.element).width()) + 'px';
+              ypos = ypos + 'px';
+            }
+            else if (s.options.direction === 'vertical') {
+              xpos = xpos + 'px';
+              ypos = '-' + (s.options.frameLoaded * $(y.element).height()) + 'px';
+            }
+
+            $(s.element).css('background-position', xpos + ' ' + ypos);
+          }
         }
 
         event.preventDefault();
