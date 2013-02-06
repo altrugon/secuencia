@@ -14,7 +14,7 @@
           frames      : [],            // Array to hold image frames
           framesMoved : 0,             // The amount of frame that has been moved during the dragging action
           cursorStyle : 'move',        // Cursor change to 'move' by default to let the user know about the sequence behaviour
-          direction   : 'horizontal',  // Dragging direction: horizontal, vertical, right, left, up, or down
+          direction   : 'horizontal',  // Dragging direction: horizontal or vertical
           dragging    : false,         // Flag to check if we are dragging inside the element
           fileExt     : '',            // File extension, ie: /this/is/myfile-0.png >> 'png'
           fileName    : '',            // File name, ie: /this/is/myfile-0.png >> 'myfile'
