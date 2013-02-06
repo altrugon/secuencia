@@ -168,15 +168,18 @@
             $(s.element).attr('src', $(s.options.frames[s.options.frameLoaded]).attr('src'));
           }
           else {
-            var xpos = parseInt($(s.element).css('background-position-x'), 10),
-                ypos = parseInt($(s.element).css('background-position-y'), 10);
+            var xpos, ypos,
+                pos = $(s.element).css('background-position').split(' ');
+
+            //xpos = parseInt(pos[0], 10),
+            //ypos = parseInt(pos[1], 10);
 
             if (s.options.direction === 'horizontal') {
               xpos = '-' + (s.options.frameLoaded * $(s.element).width()) + 'px';
-              ypos = ypos + 'px';
+              ypos = parseInt(pos[1], 10) + 'px';
             }
             else if (s.options.direction === 'vertical') {
-              xpos = xpos + 'px';
+              xpos = parseInt(pos[0], 10) + 'px';
               ypos = '-' + (s.options.frameLoaded * $(s.element).height()) + 'px';
             }
 
