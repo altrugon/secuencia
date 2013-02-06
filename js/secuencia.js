@@ -153,7 +153,7 @@
         dragged_pixels = (dragged_pixels < 0) ? dragged_pixels + final_speed : dragged_pixels; // compesate negative dragging
         new_frame = Math.floor(dragged_pixels / final_speed);
 
-        if (new_frame != s.options.framesMoved) {
+        if (new_frame !== s.options.framesMoved) {
           s.options.framesMoved = new_frame;
 
           // Check move direction and sequence limits
@@ -177,7 +177,7 @@
             }
             else if (s.options.direction === 'vertical') {
               xpos = xpos + 'px';
-              ypos = '-' + (s.options.frameLoaded * $(y.element).height()) + 'px';
+              ypos = '-' + (s.options.frameLoaded * $(s.element).height()) + 'px';
             }
 
             $(s.element).css('background-position', xpos + ' ' + ypos);
