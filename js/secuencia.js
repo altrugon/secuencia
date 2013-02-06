@@ -21,8 +21,7 @@
           filePath    : '',            // File path, ie: /this/is/myfile-0.png >> '/this/is/'
           listener    : undefined,     // The DOM element that will be listening for the events, will be set on the constructor
           nFrames     : 0,             // Number of frames
-          speed       : 1,             // Speed = 1 >> In one full drag we see a whole sequence. Increase or decrease speed as needed
-          width       : 0
+          speed       : 1              // Speed = 1 >> In one full drag we see a whole sequence. Increase or decrease speed as needed
         };
 
     // The actual plugin constructor
@@ -48,9 +47,6 @@
       // The first object empty because we don't want to alter
       // the default options for future instances of the plugin
       this.options = $.extend({}, defaults, options) ;
-
-      // This shouldn't be here. Setting an option after the $.extend call doesn't seem right.
-      this.options.width = $(this.options.listener).width();
 
       this._defaults = defaults;
       this._name = pluginName;
@@ -127,18 +123,25 @@
     function mousemove(event) {
       var s = event.data;
       if(s.options.dragging) {
+        var new_frame, dragged_pixels, final_speed;
+
         // if touchstart, move, etc. re-assign X+Y values
         if(event.originalEvent.touches && event.originalEvent.touches.length) {
           event.pageX = event.originalEvent.targetTouches[0].pageX;
           event.pageY = event.originalEvent.targetTouches[0].pageY;
         }
 
-        var new_frame,
-            dragX = event.pageX - s.options.downX,
-            final_speed = s.options.width / (s.options.nFrames * s.options.speed);
+        if (s.options.direction === 'horizontal') {
+          dragged_pixels = event.pageX - s.options.downX;
+          final_speed = $(s.options.listener).width() / (s.options.nFrames * s.options.speed);
+        }
+        else if (s.options.direction === 'vertical') {
+          dragged_pixels = event.pageY - s.options.downY;
+          final_speed = $(s.options.listener).height() / (s.options.nFrames * s.options.speed);
+        }
 
-        dragX = (dragX < 0) ? dragX + final_speed : dragX; // compesate negative dragging
-        new_frame = Math.floor(dragX / final_speed);
+        dragged_pixels = (dragged_pixels < 0) ? dragged_pixels + final_speed : dragged_pixels; // compesate negative dragging
+        new_frame = Math.floor(dragged_pixels / final_speed);
 
         if (new_frame != s.options.framesMoved) {
           s.options.framesMoved = new_frame;
