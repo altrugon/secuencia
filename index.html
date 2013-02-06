@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Secuencia javascript</title>
+    <style type="text/css" media="screen">
+      .dog-area {
+        border: 1px solid #333;
+        width: 50%;
+      }
+      #dog-area-0,
+      #dog-area-3 {
+        width: 268px;
+      }
+      #dog-2 {
+        background: url(images/dogs.png) no-repeat 0 0;
+        height: 170px;
+        width: 268px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Secuencia</h1>
+    <p>Secuencia is a jQuery plugin that allows user to manually control sequences.</p>
+    <p><strong>Note:</strong> The only required argument in the Secuencia plugin is the number of frames that your sequence has.</p>
+
+    <h3>Secuencia on an image element</h3>
+    <p><code>$('#dog-0').secuencia({nFrames: 6});</code></p>
+    <div id="dog-area-0" class="dog-area">
+      <img id="dog-0" src="images/dog-0.png" />
+    </div>
+
+    <h3>Secuencia on an image element with double speed and different listener</h3>
+    <p><code>$('#dog-1').secuencia({listener: "#dog-area-1", nFrames: 6, speed: 2});</code></p>
+    <div id="dog-area-1" class="dog-area">
+      <img id="dog-1" src="images/dog-0.png" />
+    </div>
+
+    <h3>Secuencia on a element with background image, double speed, and different listener</h3>
+    <p><code>$('#dog-2').secuencia({listener: "#dog-area-2", nFrames: 6, speed: 2, type: 'background'});;</code></p>
+    <div id="dog-area-2" class="dog-area">
+      <div id="dog-2"></div>
+    </div>
+
+    <h3>Vertical animation on an image element</h3>
+    <p><code>$('#dog-3').secuencia({direction: 'vertical', nFrames: 6});</code></p>
+    <div id="dog-area-3" class="dog-area">
+      <img id="dog-3" src="images/dog-0.png" />
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="js/secuencia.js"></script>
+    <script type="text/javascript">
+      jQuery(function() {
+        $('#dog-0').secuencia({nFrames: 6});
+        $('#dog-1').secuencia({listener: "#dog-area-1", nFrames: 6, speed: 2});
+        $('#dog-2').secuencia({listener: "#dog-area-2", nFrames: 6, speed: 2, type: 'background'});
+        $('#dog-3').secuencia({direction: 'vertical', nFrames: 6});
+      });
+    </script>
+  </body>
+</html>
